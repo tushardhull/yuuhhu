@@ -1,0 +1,167 @@
+# Horizon — Install & Run Guide
+
+## What you need first
+
+Install these on your laptop before anything else:
+
+1. **Node.js** — https://nodejs.org → download the "LTS" version and run the installer
+2. **VS Code** — https://code.visualstudio.com → download and install
+3. **Git** (optional but recommended) — https://git-scm.com
+
+To check Node.js installed correctly, open a terminal and type:
+```
+node -v
+npm -v
+```
+Both should print a version number (e.g. v20.x.x).
+
+---
+
+## Step 1 — Copy the project folder
+
+Take the `horizon` folder you downloaded and place it anywhere on your laptop.
+For example: `C:\Users\YourName\Projects\horizon` (Windows) or `~/Projects/horizon` (Mac/Linux).
+
+---
+
+## Step 2 — Open in VS Code
+
+1. Open VS Code
+2. Go to **File → Open Folder**
+3. Select the `horizon` folder
+4. VS Code will open the project
+
+---
+
+## Step 3 — Open the terminal in VS Code
+
+In VS Code, press:
+- **Windows/Linux**: `` Ctrl + ` `` (backtick key)
+- **Mac**: `` Cmd + ` ``
+
+A terminal panel opens at the bottom.
+
+---
+
+## Step 4 — Install dependencies
+
+In the terminal, type this and press Enter:
+
+```bash
+npm install
+```
+
+This downloads all the React libraries the project needs.
+It will take 1–2 minutes. You'll see a `node_modules` folder appear.
+
+---
+
+## Step 5 — Run the app
+
+In the terminal, type:
+
+```bash
+npm start
+```
+
+Your browser will automatically open at:
+```
+http://localhost:3000
+```
+
+Horizon is now running! Any changes you make to the code will instantly update in the browser.
+
+---
+
+## Project structure explained
+
+```
+horizon/
+├── public/
+│   └── index.html          ← The HTML shell (don't change this much)
+├── src/
+│   ├── index.js            ← Entry point (don't change)
+│   ├── index.css           ← Global styles and color variables
+│   ├── App.js              ← Main app — controls which tab/view is shown
+│   ├── data/
+│   │   └── templates.js    ← ALL job types, sections, and fields live here
+│   └── components/
+│       ├── Sidebar.jsx         ← Left nav, role switcher, job list
+│       ├── Topbar.jsx          ← Top bar with title and action buttons
+│       ├── RequestsDashboard.jsx ← "My Requests" tab with stats + table
+│       ├── TemplateBuilder.jsx ← HR's template editor
+│       ├── ManagerPreview.jsx  ← What the hiring manager sees
+│       └── RolePermissions.jsx ← Toggle permissions per role
+└── package.json            ← Project config and dependencies
+```
+
+---
+
+## How to customize
+
+### Add a new job type (e.g. "Legal")
+Open `src/data/templates.js` and add a new entry to `JOB_TEMPLATES`:
+
+```js
+Legal: {
+  color: 'teal',
+  sections: [
+    {
+      id: 'leg-summary',
+      name: 'Job summary',
+      tag: 'Core',
+      locked: false,
+      fields: [
+        { id: 'title', label: 'Job title', type: 'text', required: true, placeholder: 'e.g. Corporate Counsel' },
+        { id: 'practice', label: 'Practice area', type: 'select', options: ['Corporate', 'IP', 'Employment', 'Compliance'] },
+      ],
+    },
+    // add more sections...
+  ],
+},
+```
+
+### Add a section to an existing job
+Find the job in `JOB_TEMPLATES` and add an object to its `sections` array.
+
+### Change colors
+Open `src/index.css` and edit the `:root` variables.
+For example, change `--blue: #185FA5;` to any hex color you want.
+
+### Add a new field type
+Fields support these `type` values:
+- `text` — single line text input
+- `textarea` — multi-line text
+- `select` — dropdown (add an `options: []` array)
+- `checkboxes` — multiple checkboxes (add an `options: []` array)
+- `number` — numeric input
+- `date` — date picker
+
+---
+
+## To stop the app
+In the terminal, press `Ctrl + C`.
+
+## To run it again later
+Open VS Code → open terminal → type `npm start`.
+
+---
+
+## Recommended VS Code extensions
+
+Install these from the Extensions panel (Ctrl+Shift+X):
+
+- **ES7+ React/Redux/React-Native snippets** — shortcuts for writing React faster
+- **Prettier - Code formatter** — auto-formats your code
+- **Auto Rename Tag** — renames closing HTML tags automatically
+- **Tailwind CSS IntelliSense** — useful if you add Tailwind later
+
+---
+
+## Build for production (optional)
+
+When you're ready to deploy:
+```bash
+npm run build
+```
+This creates a `build/` folder with optimized files you can upload to any web server.
